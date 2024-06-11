@@ -59,7 +59,7 @@ openssl_encryption() {
       encode)
           local APP_BIN=$APP_ENC ;;
       decode)
-          local APP_BIN=$APP_ENC ;;
+          local APP_BIN=$APP_DEC ;;
       *)
           echo $"Error: Action not implemented!"
           exit 1
