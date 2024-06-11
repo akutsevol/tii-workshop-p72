@@ -1,5 +1,6 @@
-Dependencies
-Add the following dependencies to your Cargo.toml:
+= Dependencies
+
+Add the following dependencies to your *Cargo.toml*:
 
 [dependencies]
 openssl = "0.10"
