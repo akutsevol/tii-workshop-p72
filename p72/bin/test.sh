@@ -91,14 +91,14 @@ parse_options() {
 
 parse_options $@
 
+build_target
+
 KEY=$(generate_key)
 
 if [ -z "$KEY" ]; then
     echo "Error: can't generate key :("
     exit 1
 fi
-
-build_target
 
 RESULT_BIN=$(openssl_encryption "encode" "$KEY" "$INPUT_FILE" "$BIN_FILE")
 RESULT_TXT=$(openssl_encryption "decode" "$KEY" "$BIN_FILE" "$DECRYPTED_FILE")
