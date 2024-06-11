@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PROJECT="openssl"
+
 INPUT_FILE="input.txt"
 BIN_FILE="encrypted.bin"
 DECRYPTED_FILE="decrypted.txt"
@@ -12,12 +14,13 @@ generate_key() {
   local KEY_LENGTH=32
   local KEY=""
 
-  if [ ! -z "$OPEN_SSL_APP" ]; then
+  if [ -f "$OPEN_SSL_APP" ]; then
       KEY=$($OPEN_SSL_APP rand -hex $KEY_LENGTH)
-  elif [ ! -z "$UUIDGEN_APP" ]; then
+  elif [ -f "$UUIDGEN_APP" ]; then
       KEY=$($UUIDGEN_APP | tr -d '-')
-  elif [ ! -z "$HEXDUMP_APP" ]; then
-      KEY=$($HEXDUMP_APP -vn16 -e'4/4 "%08X" 1 "\n"' /dev/urandom)
+      KEY="$KEY$($UUIDGEN_APP | tr -d '-')"
+  elif [ -f "$HEXDUMP_APP" ]; then
+      KEY=$($HEXDUMP_APP -vn32 -e'4/4 "%08X" 1 "\n"' /dev/urandom | tr -d '\n')
   fi
 
   echo "$KEY"
@@ -44,8 +47,8 @@ openssl_encryption() {
       local OUT_FILE="$BIN_FOLDER/$4"
   fi
 
-  local OPENSSL_ENC=$(find .. -iname "openssl_enc")
-  local OPENSSL_DEC=$(find .. -iname "openssl_dec")
+  local OPENSSL_ENC=$(find .. -iname "${PROJECT}_enc")
+  local OPENSSL_DEC=$(find .. -iname "${PROJECT}_dec")
 
   if [ ! -f "$OPENSSL_ENC" ] || [ ! -f "$OPENSSL_DEC" ]; then
       echo "Fatal! Binaries not found! Build project first!"
@@ -72,12 +75,27 @@ openssl_encryption() {
   echo "$OUT_FILE"
 }
 
+parse_options() {
+  case "$1" in
+      openssl)
+          PROJECT="openssl" ;;
+      ring)
+          PROJECT="ring" ;;
+      *)
+          echo "Use: test.sh <encryption name>"
+          echo "Encryption name: openssl, ring"
+          exit 1
+  esac
+  echo "Encription name: $PROJECT"
+}
+
+parse_options $@
 
 KEY=$(generate_key)
 
 if [ -z "$KEY" ]; then
-  echo "Error: can't generate key :("
-  exit 1
+    echo "Error: can't generate key :("
+    exit 1
 fi
 
 build_target

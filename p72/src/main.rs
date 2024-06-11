@@ -31,8 +31,8 @@ fn main() {
 
 // Replace <hex_key> with a 64-character hex string representing a 32-byte key.
 
-// hexdump -vn16 -e'4/4 "%08X" 1 "\n"' /dev/urandom
+// hexdump -vn32 -e'4/4 "%08X" 1 "\n"' /dev/urandom | tr -d '\n'
 // uuidgen | tr -d '-'
-// openssl rand -hex 16
+// openssl rand -hex 32
 
 // This implementation ensures that the data is securely encrypted and decrypted using AES-256-GCM, and it appends the nonce to the encrypted file for later use during decryption.
