@@ -10,8 +10,12 @@ hex = "0.4"
 
 [[bin]]
 name = "ring_enc"
-path = "bin/ring_enc.rs"
+path = "src/ring_enc.rs"
 
 [[bin]]
 name = "ring_dec"
-path = "bin/ring_dec.rs"
+path = "src/ring_dec.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"

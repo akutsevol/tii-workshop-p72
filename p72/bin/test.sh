@@ -17,8 +17,7 @@ generate_key() {
   if [ -f "$OPEN_SSL_APP" ]; then
       KEY=$($OPEN_SSL_APP rand -hex $KEY_LENGTH)
   elif [ -f "$UUIDGEN_APP" ]; then
-      KEY=$($UUIDGEN_APP | tr -d '-')
-      KEY="$KEY$($UUIDGEN_APP | tr -d '-')"
+      KEY=$(echo $(uuidgen)$(uuidgen) | tr -d '-')
   elif [ -f "$HEXDUMP_APP" ]; then
       KEY=$($HEXDUMP_APP -vn32 -e'4/4 "%08X" 1 "\n"' /dev/urandom | tr -d '\n')
   fi
@@ -27,14 +26,14 @@ generate_key() {
 }
 
 build_target() {
-  # check we are not in 'bin' folder or change it
+  # check we are in 'bin' folder or change it to root
   local CUR_DIR=$(pwd)
   local ROOT_DIR=$(dirname $(realpath $(find $CUR_DIR -iname "Cargo.toml")))
 
+  # build project...
   cd $ROOT_DIR
-  # build project
   cargo clean
-  cargo build --release
+  cargo build --bin ${PROJECT}_enc --bin ${PROJECT}_dec --release
   cd $CUR_DIR
 }
 
@@ -87,7 +86,7 @@ parse_options() {
           echo "Encryption name: openssl, ring"
           exit 1
   esac
-  echo "Encription name: $PROJECT"
+  echo "Encryption name: $PROJECT"
 }
 
 parse_options $@
@@ -110,7 +109,7 @@ RESULT_TXT=$(openssl_encryption "decode" "$KEY" "$BIN_FILE" "$DECRYPTED_FILE")
 DIFF_RESULT=$(diff $(find .. -iname "$INPUT_FILE") "$RESULT_TXT")
 
 if [ ! -z "$DIFF_RESULT" ]; then
-    echo "Error: file \"" $(find .. -iname "$INPUT_FILE") "\"<> \"" "$RESULT_TXT\""
+    echo "Error: file \"" $(find .. -iname "$INPUT_FILE") "\"!= \"" "$RESULT_TXT\""
     echo "$DIFF_RESULT"
     echo "Done: FAIL"
     exit 1
