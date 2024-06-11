@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT="openssl"
+PROJECT="ring"
 
 INPUT_FILE="input.txt"
 BIN_FILE="encrypted.bin"
