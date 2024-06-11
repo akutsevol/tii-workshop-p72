@@ -47,29 +47,29 @@ openssl_encryption() {
       local OUT_FILE="$BIN_FOLDER/$4"
   fi
 
-  local OPENSSL_ENC=$(find .. -iname "${PROJECT}_enc")
-  local OPENSSL_DEC=$(find .. -iname "${PROJECT}_dec")
+  local APP_ENC=$(find .. -iname "${PROJECT}_enc")
+  local APP_DEC=$(find .. -iname "${PROJECT}_dec")
 
-  if [ ! -f "$OPENSSL_ENC" ] || [ ! -f "$OPENSSL_DEC" ]; then
+  if [ ! -f "$APP_ENC" ] || [ ! -f "$APP_DEC" ]; then
       echo "Fatal! Binaries not found! Build project first!"
       exit 1
   fi
 
   case "$ACTION" in
       encode)
-          local OPENSSL_BIN=$OPENSSL_ENC ;;
+          local APP_BIN=$APP_ENC ;;
       decode)
-          local OPENSSL_BIN=$OPENSSL_DEC ;;
+          local APP_BIN=$APP_ENC ;;
       *)
           echo $"Error: Action not implemented!"
           exit 1
   esac
 
-  if [ ! -z "$OPENSSL_BIN" ] && [ ! -z "$IN_FILE" ] && [ ! -z "$OUT_FILE" ] && [ ! -z "$KEY" ]; then
+  if [ ! -z "$APP_BIN" ] && [ ! -z "$IN_FILE" ] && [ ! -z "$OUT_FILE" ] && [ ! -z "$KEY" ]; then
       if [ -f "$OUT_FILE" ]; then
           rm -f "$OUT_FILE"
       fi
-      $OPENSSL_BIN $IN_FILE $OUT_FILE $KEY
+      $APP_BIN $IN_FILE $OUT_FILE $KEY
   fi
 
   echo "$OUT_FILE"
