@@ -39,7 +39,7 @@ cargo build --release
 ./target/release/openssl_dec encrypted.bin decrypted.txt <hex_key>
 ```
 
-*Replace <hex_key> with a 64-character hex string representing a 32-byte key*.
+Replace <hex_key> with a 64-character hex string representing a 32-byte key.
 
 ```
 hexdump -vn32 -e'4/4 "%08X" 1 "\n"' /dev/urandom | tr -d '\n'
