@@ -4,3 +4,23 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+ring = "0.16.20"
+openssl = "0.10"
+getrandom = "0.2"
+hex = "0.4"
+
+[[bin]]
+name = "openssl_enc"
+path = "bin/openssl_enc.rs"
+
+[[bin]]
+name = "openssl_dec"
+path = "bin/openssl_dec.rs"
+
+[[bin]]
+name = "ring_enc"
+path = "bin/ring_enc.rs"
+
+[[bin]]
+name = "ring_dec"
+path = "bin/ring_dec.rs"
