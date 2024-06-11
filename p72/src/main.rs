@@ -6,6 +6,7 @@ fn main() {
 // Add the following dependencies to your Cargo.toml:
 // 
 // [dependencies]
+// ring = "0.16.20"
 // openssl = "0.10"
 // getrandom = "0.2"
 // hex = "0.4"

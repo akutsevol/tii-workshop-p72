@@ -33,6 +33,7 @@ build_target() {
 
   cd $ROOT_DIR
   # build project
+  cargo clean
   cargo build --release
   cd $CUR_DIR
 }
