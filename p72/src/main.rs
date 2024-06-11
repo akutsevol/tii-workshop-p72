@@ -1,38 +1,38 @@
+const TEST_NAME: &str = "./bin/test.sh";
+const ENCRYPTION: &str = "openssl";
+
 fn main() {
-    println!("Hello, world!");
+    println!("Running {}...", TEST_NAME);
+
+    use std::process::Command;
+    use std::str;
+
+    let output = Command::new(TEST_NAME)
+        .arg(ENCRYPTION)
+        .output()
+        .expect("Failed to execute command");
+
+    // Convert the output to a string
+    let output_str = str::from_utf8(&output.stdout)
+        .expect("Failed to convert output to string");
+
+    println!("{}", output_str);
 }
 
-// Dependencies
-// Add the following dependencies to your Cargo.toml:
-// 
-// [dependencies]
-// openssl = "0.10"
-// getrandom = "0.2"
-// hex = "0.4"
- 
-// Building and Running the Binaries
-// To build the binaries, add the following to your Cargo.toml:
+#[cfg(test)]
+mod tests {
+    use std::process::Command;
 
-// [[bin]]
-// name = "openssl_enc"
-// path = "bin/openssl_enc.rs"
+    #[test]
+    fn test_openssl_encrypting_decrypting_file() {
+        let output = Command::new(crate::TEST_NAME)
+        .arg(crate::ENCRYPTION)
+        .output()
+        .expect("Failed to execute command");
 
-// [[bin]]
-// name = "openssl_dec"
-// path = "bin/openssl_dec.rs"
+        println!("{:?}", output.stdout.as_slice());
 
-// cargo build --release
-//
-// # Encrypt a file
-// ./target/release/openssl_enc input.txt encrypted.bin <hex_key>
-
-// # Decrypt the file
-// ./target/release/openssl_dec encrypted.bin decrypted.txt <hex_key>
-
-// Replace <hex_key> with a 64-character hex string representing a 32-byte key.
-
-// hexdump -vn32 -e'4/4 "%08X" 1 "\n"' /dev/urandom | tr -d '\n'
-// uuidgen | tr -d '-'
-// openssl rand -hex 32
-
-// This implementation ensures that the data is securely encrypted and decrypted using AES-256-GCM, and it appends the nonce to the encrypted file for later use during decryption.
+        let expected: String = format!("Encryption name: {}\nDone: SUCCESS\n", crate::ENCRYPTION);
+        assert_eq!(expected.as_bytes().to_vec(), output.stdout.as_slice());
+    }
+}

@@ -10,8 +10,12 @@ hex = "0.4"
 
 [[bin]]
 name = "openssl_enc"
-path = "bin/openssl_enc.rs"
+path = "src/openssl_enc.rs"
 
 [[bin]]
 name = "openssl_dec"
-path = "bin/openssl_dec.rs"
+path = "src/openssl_dec.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
