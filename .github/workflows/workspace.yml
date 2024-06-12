@@ -2,7 +2,7 @@ name: Workspace
 
 on:
   push:
-    branches: [ "master", "feature/file_encryption_using_openssl", "feature/file_encryption_using_ring" ]
+    branches: [ "master", "feature/*" ]
   pull_request:
     branches: [ "master" ]
 
