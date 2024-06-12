@@ -1,6 +1,5 @@
-use ring::aead::{self, Aad, LessSafeKey, UnboundKey, Nonce};
+use ring::aead::{self, Aad, LessSafeKey, Nonce, UnboundKey};
 use ring::rand::{SecureRandom, SystemRandom};
-use hex;
 use std::fs;
 
 const NONCE_LEN: usize = 12;
@@ -27,7 +26,9 @@ fn main() {
     let mut output_data = vec![0u8; NONCE_LEN + input_data.len() + TAG_LEN];
 
     let mut nonce = [0u8; NONCE_LEN];
-    SystemRandom::new().fill(&mut nonce).expect("Failed to generate nonce");
+    SystemRandom::new()
+        .fill(&mut nonce)
+        .expect("Failed to generate nonce");
 
     output_data[..NONCE_LEN].copy_from_slice(&nonce);
 

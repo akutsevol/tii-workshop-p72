@@ -1,5 +1,4 @@
-use ring::aead::{self, Aad, LessSafeKey, UnboundKey, Nonce};
-use hex;
+use ring::aead::{self, Aad, LessSafeKey, Nonce, UnboundKey};
 use std::fs;
 
 const NONCE_LEN: usize = 12;
