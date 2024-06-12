@@ -1,8 +1,7 @@
 use openssl::symm::{decrypt_aead, Cipher};
-use std::fs::{File, read};
-use std::io::Write;
 use std::env;
-use hex;
+use std::fs::{read, File};
+use std::io::Write;
 
 const NONCE_LEN: usize = 12;
 const TAG_LEN: usize = 16;
@@ -24,7 +23,7 @@ fn main() {
     }
 
     let input_data = read(input_file).expect("Failed to read input file");
-    
+
     if input_data.len() < NONCE_LEN + TAG_LEN {
         eprintln!("Invalid input file: too short");
         std::process::exit(1);
@@ -36,9 +35,11 @@ fn main() {
 
     let cipher = Cipher::aes_256_gcm();
 
-    let plaintext = decrypt_aead(cipher, &key, Some(nonce), &[], ciphertext, tag)
-        .expect("Decryption failed");
+    let plaintext =
+        decrypt_aead(cipher, &key, Some(nonce), &[], ciphertext, tag).expect("Decryption failed");
 
     let mut output = File::create(output_file).expect("Failed to create output file");
-    output.write_all(&plaintext).expect("Failed to write plaintext");
+    output
+        .write_all(&plaintext)
+        .expect("Failed to write plaintext");
 }

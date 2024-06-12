@@ -1,9 +1,8 @@
-use openssl::symm::{encrypt_aead, Cipher};
 use getrandom::getrandom;
-use std::fs::{File, read};
-use std::io::Write;
+use openssl::symm::{encrypt_aead, Cipher};
 use std::env;
-use hex;
+use std::fs::{read, File};
+use std::io::Write;
 
 const NONCE_LEN: usize = 12;
 const TAG_LEN: usize = 16;
@@ -38,5 +37,7 @@ fn main() {
     let mut output = File::create(output_file).expect("Failed to create output file");
     output.write_all(&nonce).expect("Failed to write nonce");
     output.write_all(&tag).expect("Failed to write tag");
-    output.write_all(&ciphertext).expect("Failed to write ciphertext");
+    output
+        .write_all(&ciphertext)
+        .expect("Failed to write ciphertext");
 }

@@ -13,8 +13,7 @@ fn main() {
         .expect("Failed to execute command");
 
     // Convert the output to a string
-    let output_str = str::from_utf8(&output.stdout)
-        .expect("Failed to convert output to string");
+    let output_str = str::from_utf8(&output.stdout).expect("Failed to convert output to string");
 
     println!("{}", output_str);
 }
@@ -26,9 +25,9 @@ mod tests {
     #[test]
     fn test_openssl_encrypting_decrypting_file() {
         let output = Command::new(crate::TEST_NAME)
-        .arg(crate::ENCRYPTION)
-        .output()
-        .expect("Failed to execute command");
+            .arg(crate::ENCRYPTION)
+            .output()
+            .expect("Failed to execute command");
 
         println!("{:?}", output.stdout.as_slice());
 
